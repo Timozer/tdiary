@@ -29,7 +29,7 @@
 \RequirePackage{amstext, amsmath, amssymb, amsfonts}
 \RequirePackage{mathrsfs, bm, mathtools}
 
-\RequirePackage{graphicx, tikz}
+\RequirePackage{graphicx, tikz, pgfplots}
 \RequirePackage[labelformat=simple]{subcaption}
 
 \RequirePackage{array, longtable, makecell, tabu, booktabs}
@@ -122,8 +122,10 @@
     \clearpage 
     \thispagestyle{empty}
 }
+
 \NewDocumentCommand{\tmonth}{m}{%
     \date@month{#1}
+    %\date@month{\expandafter#1}
 
     \iftdiary@date@newyear
         \cleardoublepage 
@@ -143,9 +145,9 @@
         % even page flushleft
         \textit{\bfseries \tfonts@erhao \tdiary@date@month{}} \hfill 
     }
-    \vskip \baselineskip 
+    \vskip 0.5\baselineskip 
     \par\noindent\rule[0.5ex]{\textwidth}{1pt}\par
-    \vskip 2\baselineskip 
+    \vskip 0.5\baselineskip 
 }
 \NewDocumentCommand{\tday}{m}{%
     \date@day{#1}
@@ -195,7 +197,7 @@
     %\fancyhead[CO]{\small 中国地质大学\cug@@titlelogo}
     %\fancyhead[RO, LE]{\cug@wuhao \thepage}
     %\fancyhead[CE]{\cug@wuhao \@author: \@title}
-    \fancyhead[CO, CE]{\textit{\tdiary@date@month\ \tdiary@date@day\ \tdiary@date@year}}
+    \fancyhead[CO, CE]{\textit{\tdiary@date@month{}.~\tdiary@date@day\ \tdiary@date@year}}
     \fancyfoot[C]{\thepage}
     \renewcommand{\headrulewidth}{0.4pt}
 }
@@ -228,41 +230,40 @@
     \tdiary@mainmatter 
 }
 
-%\pgfmathtruncatemacro{\StartYear}{2018}
-%\pgfmathtruncatemacro{\ThisYear}{2018}
-
 \tdiary@define@term{tstartyear}
 \tdiary@define@term{tthisyear}
 
-\NewDocumentCommand{\treaddiarys}{}{%
-    \foreach \Year in {\tdiary@tstartyear,...,\tdiary@tthisyear}
+\let\tforeach=\pgfplotsforeachungrouped 
+\NewDocumentCommand{\treaddiaries}{}{%
+    \tforeach \Year in {\tdiary@tstartyear,...,\tdiary@tthisyear}
+    %\foreach \Year in {\tdiary@tstartyear,...,\tdiary@tthisyear}
     {   
         \IfFileExists{./diary/\Year/.folderexist}
-        {\tyear{\Year}}
-        {}
-        \foreach \Month in {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec}
-        {   
-            \IfFileExists{./diary/\Year/\Month/.folderexist}
-            {\tmonth{\Month}}
-            {}
-            \foreach \Day in {1,...,31}
-            {   \IfFileExists{./diary/\Year/\Month/\Day}
-                {   
-                    \tday{\Day}
-                    \input{./diary/\Year/\Month/\Day}
+        {
+            \tyear{\Year}
+            \tforeach \Month in {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec}
+            %\foreach \Month in {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec}
+            {   
+                \IfFileExists{./diary/\Year/\Month/.folderexist}
+                {
+                    \tmonth{\Month}
+                    \tforeach \Day in {1,...,31}
+                    %\foreach \Day in {1,...,31}
+                    {   
+                        \IfFileExists{./diary/\Year/\Month/\Day}
+                        {   
+                            \tday{\Day}
+                            \input{./diary/\Year/\Month/\Day}
+                        }
+                        {}   % files does not exist, so nothing to do
+                    }
                 }
-                {   % files does not exist, so nothing to do
-                }
-
+                {} % if the month folder doesn't exist, nothing to do but continue next loop
             }
         }
+        {} % if the year folder doesn't exist, nothing to do but continue next loop
     }
 }
-% \rmfamily, \sffamily, \ttfamily, \upshape, \itshape, \slshape, \scshape, \bfseries, \mdseries, \lfseries
-% tex 中定义命令的语句 \def, \gdef, \edef, \xdef, \gdef -> \global\def
-% \def<命令模板>{定义}
-% \def\Emph#1{\bf{#1}}
-% 排版文件目录树的宏包: dirtree, forest
 
 %%%%%%%%%%%%%%%%%%% 定制列表环境, 让它们看起来更紧凑一些 %%%%%%%%%%%%%%%%%%%%
 \setlist[itemize]{parsep=0pt, itemsep=0pt, topsep=0pt, rightmargin=2em, partopsep=2pt}

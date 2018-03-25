@@ -8,12 +8,14 @@ THISYEAR = 2018
 OBJECTS = main.pdf
 target: $(OBJECTS)
 
-main.pdf: main.tex *.cls *.sty Makefile
-	$(TEX) -shell-escape $<
+main.pdf: FORCE 
+	$(TEX) -shell-escape main.tex
 	#$(BIBTEX) main.aux
-	#$(TEX) -shell-escape $<
-	#$(TEX) -shell-escape $<
+	#$(TEX) -shell-escape main.tex
+	#$(TEX) -shell-escape main.tex
 	$(OPEN) $@
+
+FORCE: ;
 
 genfolderexist:
 	./genexistfiles.sh $(STARTYEAR) $(THISYEAR)
