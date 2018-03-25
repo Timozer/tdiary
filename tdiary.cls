@@ -42,8 +42,8 @@
 %--------------- Page Layout ---------------
 \RequirePackage[a5paper, 
     marginparwidth=0pt, marginparsep=0pt,
-    top=3cm, bottom=3cm, left=3cm, right=3cm, 
-    headheight=2.5cm, headsep=10pt, footskip=2cm]{geometry}
+    top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, 
+    headheight=2cm, headsep=10pt, footskip=1cm]{geometry}
 %-------------------------封面制作---------------------------
 
 \def\tdiary@define@term#1{
@@ -63,7 +63,7 @@
             \leavevmode 
             \vspace*{\baselineskip}
             {\Huge %\fontsize{75}{60}\selectfont
-            \artdecoframe{\itshape Who\\ am \\ I}}
+            \artdecoframe{\sffamily Who\\ am \\ I}}
             \vspace*{2\baselineskip}
             \vfill
             {\large \emph{Timozer}}
@@ -111,12 +111,12 @@
     \thispagestyle{empty}
     \begin{tikzpicture}[scale=1, remember picture, overlay]
         \draw (current page.east) ++(-5cm, 1ex) node[anchor=south east, align=right]{%
-                {\textit{\tfonts@chuhao \bfseries Year}}
+                {\textsf{\tfonts@chuhao \bfseries Year}}
             };
 
         \draw[black, very thick] (current page.west) ++(5cm, 0cm) -- (current page.east);
         \draw (current page.east) ++(-5cm, -1ex) node[anchor=north east, align=left]{%
-                {\textit{\tfonts@chuhao \bfseries \tdiary@date@year}}
+                {\textsf{\tfonts@chuhao \bfseries \tdiary@date@year}}
             };
     \end{tikzpicture}
     \clearpage 
@@ -140,10 +140,10 @@
     \ifthenelse{\isodd{\thepage}}
     {
         % odd page  flushright
-        \hfill \textit{\bfseries \tfonts@erhao \tdiary@date@month{}}
+        \noindent \hfill \textsf{\bfseries \tfonts@erhao \tdiary@date@month{}}
     }{%
         % even page flushleft
-        \textit{\bfseries \tfonts@erhao \tdiary@date@month{}} \hfill 
+        \noindent \textsf{\bfseries \tfonts@erhao \tdiary@date@month{}} \hfill 
     }
     \vskip 0.5\baselineskip 
     \par\noindent\rule[0.5ex]{\textwidth}{1pt}\par
@@ -155,10 +155,10 @@
     \ifthenelse{\isodd{\thepage}}
     {
         % odd page flushright 
-        \hfill \textit{\bfseries \tfonts@sanhao \tdiary@date@day}
+        \noindent\hfill \textsf{\bfseries \tfonts@sanhao \tdiary@date@day}
     }{%
         % even page flushleft
-        \textit{\bfseries \tfonts@sanhao \tdiary@date@day} \hfill 
+        \noindent \textsf{\bfseries \tfonts@sanhao \tdiary@date@day} \hfill 
     }
     \vskip \baselineskip 
 }
@@ -197,7 +197,7 @@
     %\fancyhead[CO]{\small 中国地质大学\cug@@titlelogo}
     %\fancyhead[RO, LE]{\cug@wuhao \thepage}
     %\fancyhead[CE]{\cug@wuhao \@author: \@title}
-    \fancyhead[CO, CE]{\textit{\tdiary@date@month{}.~\tdiary@date@day\ \tdiary@date@year}}
+    \fancyhead[RO, LE]{\textsf{\tdiary@date@month{}~\tdiary@date@day,~\tdiary@date@year}}
     \fancyfoot[C]{\thepage}
     \renewcommand{\headrulewidth}{0.4pt}
 }
@@ -233,26 +233,45 @@
 \tdiary@define@term{tstartyear}
 \tdiary@define@term{tthisyear}
 
+\def\tdatemonth{\@ifstar\@tdatemonth\@@tdatemonth}
+\def\@tdatemonth#1{
+    \ifcase#1 \or Jan\or Feb\or Mar\or Apr\or May%
+        \or Jun\or Jul\or Aug\or Sep\or Oct\or Nov\or Dec%
+    \else *
+    \fi\relax 
+}
+\def\@@tdatemonth#1{
+    \ifcase#1 \or January\or February\or March\or April\or May%
+        \or June\or July\or August\or Septemeber\or October\or November\or December%
+    \else *
+    \fi\relax 
+}
+\NewDocumentCommand{\tdateday}{m}{%
+    \ifcase#1 \or 1st\or 2nd\or 3rd\or 4th\or 5th\or 6th\or 7th\or 8th\or 9th\or 10th%
+           \or 11th\or 12th\or 13th\or 14th\or 15th\or 16th\or 17th\or 18th\or 19th\or 20th%
+           \or 21st\or 22nd\or 23rd\or 24th\or 25th\or 26th\or 27th\or 28th\or 29th\or 30th\or 31st%
+    \else *
+    \fi\relax 
+}
 \let\tforeach=\pgfplotsforeachungrouped 
 \NewDocumentCommand{\treaddiaries}{}{%
     \tforeach \Year in {\tdiary@tstartyear,...,\tdiary@tthisyear}
-    %\foreach \Year in {\tdiary@tstartyear,...,\tdiary@tthisyear}
     {   
         \IfFileExists{./diary/\Year/.folderexist}
         {
             \tyear{\Year}
-            \tforeach \Month in {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec}
-            %\foreach \Month in {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec}
+            \tforeach \Monthnum/\Month in {1/Jan, 2/Feb, 3/Mar, 4/Apr, 5/May, 6/Jun, 7/Jul, 8/Aug, 9/Sep, 10/Oct, 11/Nov, 12/Dec}
+            %\tforeach \Month in {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec}
+            %\tforeach \Month in {1,...,12}
             {   
                 \IfFileExists{./diary/\Year/\Month/.folderexist}
                 {
-                    \tmonth{\Month}
+                    \tmonth{\tdatemonth{\Monthnum}}
                     \tforeach \Day in {1,...,31}
-                    %\foreach \Day in {1,...,31}
                     {   
                         \IfFileExists{./diary/\Year/\Month/\Day}
                         {   
-                            \tday{\Day}
+                            \tday{\tdateday{\Day}}
                             \input{./diary/\Year/\Month/\Day}
                         }
                         {}   % files does not exist, so nothing to do
