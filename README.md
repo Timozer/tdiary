@@ -13,3 +13,8 @@ Also, I want to implement the function which we can record our research diaries.
 最后经过一番 google, 找到了解决方法，使用 `pgfplots` 宏包里面的 `\pgfplotsforeachungrouped`
 代替 `\foreach` 就可以了，用法基本一致。
 
+# BUGS
+
+2018年 3月27日 星期二 20时22分58秒 CST 待解决
+
+发现一个bug，奇数页与偶数页识别有错误，目前不知道什么问题，该怎么解决，先放着吧!
