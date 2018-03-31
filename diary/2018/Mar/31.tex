@@ -1,0 +1,30 @@
+%!TEX TS-program = xelatex
+% vim: set fenc=utf-8
+
+% -*- coding: UTF-8; -*-
+%!TEX encoding = UTF-8 Unicode 
+
+周六
+
+学习笔记：
+
+图片被识别成什么不仅仅取决于图片本身，还取决于图片是如何被观察的。
+
+如何在图片识别中加入远近距离（多次采样，转换视角，补全信息）的探测，
+和光照强弱方向等。
+
+CNN 通过局部连接达到空间共享，聪儿实现画面不变性(invariance)。
+
+ResNet：跨层连接，batch normalization
+
+GoogLeNet：Inception-v4 模块的使用（尺寸不变性）
+
+DenseNet：将跨层从头进行到尾
+
+趋势：
+\begin{itemize}
+    \item 使用 small filter 和 pooling
+    \item 去掉 parameters 的全连接
+    \item Inception
+    \item 跳层连接
+\end{itemize}
