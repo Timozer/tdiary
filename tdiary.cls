@@ -42,8 +42,9 @@
 %--------------- Page Layout ---------------
 \RequirePackage[a5paper, 
     marginparwidth=0pt, marginparsep=0pt,
-    top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, 
-    headheight=2cm, headsep=10pt, footskip=1cm]{geometry}
+    top=2.5cm, bottom=2.5cm, 
+    inner=3cm, outer=2.5cm,
+    headheight=1.5cm, headsep=10pt, footskip=1.5cm]{geometry}
 %-------------------------封面制作---------------------------
 
 \def\tdiary@define@term#1{

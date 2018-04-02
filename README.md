@@ -13,8 +13,11 @@ Also, I want to implement the function which we can record our research diaries.
 最后经过一番 google, 找到了解决方法，使用 `pgfplots` 宏包里面的 `\pgfplotsforeachungrouped`
 代替 `\foreach` 就可以了，用法基本一致。
 
+2018年 4月 2日 星期一 11时11分33秒 CST
+
+修复 bug，现在奇偶页可以正常识别了，是页面设置的问题, geometry 宏包。
 # BUGS
 
-2018年 3月27日 星期二 20时22分58秒 CST 待解决
+2018年 3月27日 星期二 20时22分58秒 CST 已解决 2018年 4月 2日 星期一 11时11分33秒 CST
 
 发现一个bug，奇数页与偶数页识别有错误，目前不知道什么问题，该怎么解决，先放着吧!
